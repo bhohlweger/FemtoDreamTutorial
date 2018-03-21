@@ -65,7 +65,7 @@ AliAnalysisTaskSE* AddTaskFemtoDreamTutorial(
   //The same things for negative pions
   AliFemtoDreamTrackCuts *TrackCuts2=new AliFemtoDreamTrackCuts();
   TrackCuts2->SetIsMonteCarlo(isMC);
-  TrackCuts2->SetCutCharge(1);
+  TrackCuts2->SetCutCharge(-1);
   TrackCuts2->SetFilterBit(128);
   TrackCuts2->SetPtRange(0.5, 4.05);
   TrackCuts2->SetEtaRange(-0.8, 0.8);
