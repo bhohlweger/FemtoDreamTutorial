@@ -44,7 +44,7 @@ class AliAnalysisTaskFemtoTutorial : public AliAnalysisTaskSE {
   AliFemtoDreamCollConfig *fConfig;         //
   AliFemtoDreamPairCleaner *fPairCleaner;   //!
   AliFemtoDreamPartCollection *fPartColl;   //!
-  AliAODTrack           **fGTI;             //!
+  std::vector<AliAODTrack*> fGTI;           //!
   int fTrackBufferSize;                     //
   ClassDef(AliAnalysisTaskFemtoTutorial,1)
 };
