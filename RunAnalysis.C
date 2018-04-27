@@ -69,7 +69,7 @@ void RunAnalysis(){
   //          DPMJET: LHC17f2b_fast_q/t, LHC1	7f2b_centwoSDD_q/t LHC17
   //test (for a one run sample of LHC13b_p2)
   TString dataPeriod = "LHC16";
-  TString dataSet = "qFAST";
+  TString dataSet = "d";
 
   gROOT->LoadMacro("CreateAlienHandlerBernie.C");
   // Create and configure the alien handler plugin
