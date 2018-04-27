@@ -3,4 +3,6 @@ outputs_valid
 stderr
 test*
 wn.xml
-
+AliAnalysisTaskFemtoTutorial_cxx.d
+AliAnalysisTaskFemtoTutorial_cxx_ACLiC_dict_rdict.pcm
+AliAnalysisTaskFemtoTutorial_cxx.so
