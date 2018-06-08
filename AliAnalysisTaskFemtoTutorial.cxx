@@ -73,7 +73,8 @@ void AliAnalysisTaskFemtoTutorial::UserCreateOutputObjects() {
   //In principal we need this to map the tracks flagged with Filterbit 128 (TPC only Tracks constrained to the
   //Primary Vertex estimated with ITS tracks) to the global tracks. This is neccessary to have the full tracking
   //information available.
-    
+  fGTI=new AliAODTrack*[fTrackBufferSize];
+
   if (!fTrackCutsPart1) {
     // If the track cuts didn't arrive here, we can go home
     AliFatal("Track Cuts for Particle One not set!");
@@ -156,7 +157,7 @@ void AliAnalysisTaskFemtoTutorial::UserExec(Option_t *) {
         StoreGlobalTrackReference(track);
       }
       //Set the global track array for the track to be able to access it.
-      fTrack->SetGlobalTrackInfo(&fGTI);
+      fTrack->SetGlobalTrackInfo(fGTI,fTrackBufferSize);
       //After this is done, let the search for particles begin.
       //This is where we are going to store the particles we find for now. But hold up!
       //AliFemtoDreamBasePart?? Well, see every particle candidate type, be it track, v0 or
@@ -220,8 +221,10 @@ void AliAnalysisTaskFemtoTutorial::ResetGlobalTrackReference(){
     
     // Sets all the pointers to zero. To be called at
     // the beginning or end of an event
-    fGTI.clear();
-    fGTI.resize(fTrackBufferSize);
+    for(UShort_t i=0;i<fTrackBufferSize;i++)
+    {
+        fGTI[i]=0;
+    }
 }
 void AliAnalysisTaskFemtoTutorial::StoreGlobalTrackReference(AliAODTrack *track){
     //This method was inherited form H. Beck analysis
@@ -263,36 +266,46 @@ void AliAnalysisTaskFemtoTutorial::StoreGlobalTrackReference(AliAODTrack *track)
     // }
     
     // Check that the id is positive
-    
-    if(!track) return;
-    
-    // Check that the id is positive
-    if(track->GetID()<0) return;
+    const int trackID = track->GetID();
+    if(trackID<0){
+        return;
+    }
     
     // Check id is not too big for buffer
-    if(track->GetID() >= static_cast<int>(fGTI.size())) fGTI.resize(track->GetID()+1);
+    if(trackID>=fTrackBufferSize){
+        printf("Warning: track ID too big for buffer: ID: %d, buffer %d\n"
+               ,trackID,fTrackBufferSize);
+        return;
+    }
     
     // Warn if we overwrite a track
-    auto *trackRef = fGTI[track->GetID()];
-    if(trackRef) {
+    if(fGTI[trackID])
+    {
         // Seems like there are FilterMap 0 tracks
         // that have zero TPCNcls, don't store these!
-        if( (!track->GetFilterMap()) && (!track->GetTPCNcls())) return;
-        
-        
+        if( (!track->GetFilterMap()) && (!track->GetTPCNcls()) ){
+            return;
+        }
         // Imagine the other way around, the zero map zero clusters track
         // is stored and the good one wants to be added. We ommit the warning
         // and just overwrite the 'bad' track
-        if( fGTI[track->GetID()]->GetFilterMap() || fGTI[track->GetID()]->GetTPCNcls()) {
+        if( fGTI[trackID]->GetFilterMap() || fGTI[trackID]->GetTPCNcls()  ){
             // If we come here, there's a problem
-            std::cout << "Warning! global track info already there! ";
-            std::cout << "TPCNcls track1 " << (fGTI[track->GetID()])->GetTPCNcls() << " track2 " << track->GetTPCNcls();
-            std::cout << " FilterMap track1 " << (fGTI[track->GetID()])->GetFilterMap() << " track 2" << track->GetFilterMap() << "\n";
-            fGTI[track->GetID()] = nullptr;
+            printf("Warning! global track info already there!");
+            printf("         TPCNcls track1 %u track2 %u",
+                   (fGTI[trackID])->GetTPCNcls(),track->GetTPCNcls());
+            printf("         FilterMap track1 %u track2 %u\n",
+                   (fGTI[trackID])->GetFilterMap(),track->GetFilterMap());
         }
     } // Two tracks same id
     
+    // // There are tracks with filter bit 0,
+    // // do they have TPCNcls stored?
+    // if(!track->GetFilterMap()){
+    //   printf("Filter map is zero, TPCNcls: %u\n"
+    //     ,track->GetTPCNcls());
+    // }
+    
     // Assign the pointer
-    (fGTI.at(track->GetID())) = track;
-
+    (fGTI[trackID]) = track;
 }
