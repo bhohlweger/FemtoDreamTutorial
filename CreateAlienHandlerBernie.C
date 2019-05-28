@@ -21,7 +21,7 @@ AliAnalysisAlien *CreateAlienHandlerBernie(TString user,TString analysisType, Bo
   plugin->SetAdditionalLibs("libPWGflowBase.so libPWGflowTasks.so libPWGHFbase.so "
       "libPWGHFvertexingHF.so libGui.so libRAWDatabase.so libCDB.so libSTEER.so "
       "libTRDbase.so libPWGTRD.so "
-      "AliAnalysisTaskFemtoTutorial.cxx AliAnalysisTaskFemtoTutorial.cxx"
+      "AliAnalysisTaskFemtoTutorial.cxx AliAnalysisTaskFemtoTutorial.h"
   );
 
   plugin->SetOverwriteMode(kTRUE);
