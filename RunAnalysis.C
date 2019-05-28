@@ -41,9 +41,14 @@ void RunAnalysis(){
       "-I$ALICE_ROOT/STEER/AOD -I$ALICE_ROOT/TRD -I$ALICE_ROOT/macros -I$ALICE_ROOT/ANALYSIS  "
       "-I$ALICE_PHYSICS/OADB -I$ALICE_PHYSICS/PWG -I$ALICE_PHYSICS/OADB/macros/ -g");
 // MAKE ME COMMIT 
-  //test, full or terminate
+  // How to use: 
+  //analysisType = test: Test locally, an analysis file will be downloaded from the grid 
+  //analysisType = full: A batch of jobs will be send to the grid, check status here: https://alimonitor.cern.ch/users/jobs.jsp
+  //analysisType = terminate: As soon as jobs are in done, use this option to get your AnalysisResults.root from the grid. 
+  //The outputs of the subjobs will be merged, depending on what preFinalStage is set to.  
   TString analysisType = "test";
-  //after last run of terminate, to download files kFALSE
+  //As long as preFinal stage is true, merging jobs will be submitted on the grid. When merging jobs are done, resubmit them, 
+  //until no more new ones are submitted. Then, for the final merge and to to download files useo option false
   Bool_t preFinalStage = true;
   //Put AliPhysics Version here, from http://alimonitor.cern.ch/packages/
   //Keep the fudging -1 else doom and despair
