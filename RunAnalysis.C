@@ -97,7 +97,7 @@ void RunAnalysis(){
 
   TGrid::Connect("alien://");
 
-    AliMultSelectionTask *task = reinterpret_cast<AliMultSelectionTask*>(gInterpreter->ExecuteMacro("$ALICE_PHYSICS/OADB/COMMON/MULTIPLICITY/macros/AddTaskMultSelection.C (true)"));
+    AliMultSelectionTask *task = reinterpret_cast<AliMultSelectionTask*>(gInterpreter->ExecuteMacro("$ALICE_PHYSICS/OADB/COMMON/MULTIPLICITY/macros/AddTaskMultSelection.C (false)"));
 
   //PID Response needed for the nSigma PID
     AliAnalysisTaskPIDResponse *PIDTask=reinterpret_cast<AliAnalysisTaskPIDResponse*>(
